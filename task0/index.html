@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 0</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>Task 0</h1>
+    <p>JavaScript Refresher</p>
+</header>
+
+<main>
+
+    <!-- 1 -->
+    <section>
+        <h2>1. Variables and Data Types</h2>
+
+        <div id="variables"></div>
+
+        <h3>Questions</h3>
+        <ul>
+            <li><b>let vs const:</b> let can be reassigned, while const cannot be reassigned.</li>
+            <li><b>typeof null:</b> returns "object". This is a historical JavaScript behavior.</li>
+            <li><b>Primitive types:</b> string, number, bigint, boolean, undefined, null, symbol.</li>
+        </ul>
+
+        <p class="insight">
+            <b>My insight:</b> I learned that JavaScript has different data types
+            and that variables can store different kinds of values. I also noticed
+            that <code>typeof null</code> returning "object" is a little confusing.
+        </p>
+    </section>
+
+
+    <!-- 2 -->
+    <section>
+        <h2>2. Arrays</h2>
+
+        <p>Original array: <code>[3, 7, 2, 10, 5]</code></p>
+
+        <div id="arrays"></div>
+
+        <p class="insight">
+            <b>My insight:</b> I learned how <code>map</code>, <code>filter</code>,
+            <code>find</code>, <code>reduce</code>, and <code>includes</code> can
+            make working with arrays easier. I also noticed that these methods
+            allow me to create results without changing the original array.
+        </p>
+    </section>
+
+
+    <!-- 3 -->
+    <section>
+        <h2>3. Arrays of Objects</h2>
+
+        <div id="students"></div>
+
+        <p class="insight">
+            <b>My insight:</b> I learned how to work with arrays that contain
+            objects. Methods like <code>filter</code>, <code>find</code>, and
+            <code>map</code> are useful for searching and transforming student data.
+        </p>
+    </section>
+
+
+    <!-- 4 -->
+    <section>
+        <h2>4. Objects</h2>
+
+        <div id="objects"></div>
+
+        <p class="insight">
+            <b>My insight:</b> I learned different ways to work with objects,
+            including changing, adding, and deleting properties. Destructuring
+            also makes it easier to get values from objects.
+        </p>
+    </section>
+
+
+    <!-- 5 -->
+    <section>
+        <h2>5. Values and References</h2>
+
+        <div id="references"></div>
+
+        <p class="insight">
+            <b>My insight:</b> I learned that objects are copied by reference.
+            This means that changing a copied object can also change the original.
+            The spread operator helps create a new object, but nested objects
+            need extra copying.
+        </p>
+    </section>
+
+
+    <!-- 6 -->
+    <section>
+        <h2>6. Functions</h2>
+
+        <div id="functions"></div>
+
+        <p class="insight">
+            <b>My insight:</b> I learned how to create functions using both
+            normal syntax and arrow functions. Functions help keep the code
+            organized and allow me to reuse the same logic.
+        </p>
+    </section>
+
+
+    <!-- 7 -->
+    <section>
+        <h2>7. Functions as Values</h2>
+
+        <div id="function-values"></div>
+
+        <p class="insight">
+            <b>My insight:</b> I learned that functions can be stored in variables
+            and passed to other functions. This was interesting because functions
+            can be used like other values in JavaScript.
+        </p>
+    </section>
+
+
+    <!-- 8 -->
+    <section>
+        <h2>8. Scope</h2>
+
+        <div id="scope"></div>
+
+        <p class="insight">
+            <b>My insight:</b> I learned that variables can have different scopes.
+            <code>let</code> and <code>const</code> are block-scoped, while
+            <code>var</code> is function-scoped. I think using <code>let</code>
+            and <code>const</code> makes the code easier to control.
+        </p>
+    </section>
+
+
+    <!-- 9 -->
+    <section>
+        <h2>9. Closure</h2>
+
+        <div id="closure"></div>
+
+        <p class="insight">
+            <b>My insight:</b> I learned that an inner function can remember
+            variables from its outer function. The counter example helped me
+            understand how each counter can keep its own value.
+        </p>
+    </section>
+
+
+    <!-- 10 -->
+    <section>
+        <h2>10. Destructuring, Spread and Rest</h2>
+
+        <div id="spread-rest"></div>
+
+        <p class="insight">
+            <b>My insight:</b> I learned that destructuring makes it easier to
+            get values from arrays and objects. The spread operator is useful
+            for copying and combining data, while rest collects multiple values.
+        </p>
+    </section>
+
+
+    <!-- 11 -->
+    <section>
+        <h2>11. Optional Chaining and Default Values</h2>
+
+        <div id="optional"></div>
+
+        <p class="insight">
+            <b>My insight:</b> I learned that optional chaining helps avoid errors
+            when a property does not exist. I also noticed that <code>??</code>
+            is different from <code>||</code> because it only treats
+            <code>null</code> and <code>undefined</code> as missing values.
+        </p>
+    </section>
+
+
+    <!-- Final -->
+    <section>
+        <h2>Final Task</h2>
+
+        <div id="final-task"></div>
+
+        <p class="insight">
+            <b>My insight:</b> This task helped me combine the JavaScript concepts
+            from all the previous sections. I used functions, array methods,
+            destructuring, and spread while trying not to modify the original data.
+            I think these concepts will be useful when I start working with React.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    <p>JavaScript Refresher — Practice Project</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
