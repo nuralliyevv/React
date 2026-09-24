@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>JavaScript Runtime & Async</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>JavaScript Runtime & Async</h1>
+    <p>Closures · Promises · Async/Await · Event Loop</p>
+</header>
+
+<main>
+
+    <!-- Tasks -->
+
+    <section class="section">
+
+        <div class="section-header">
+            <div>
+                <h2>Async Tasks</h2>
+                <p>Simulated loading using Promise and setTimeout</p>
+            </div>
+        </div>
+
+        <div id="tasks" class="tasks"></div>
+
+        <div class="buttons">
+
+            <button id="runAll">
+                Run All Tasks
+            </button>
+
+            <button id="runSequential">
+                Run Sequential
+            </button>
+
+            <button id="runConcurrent">
+                Run Concurrent
+            </button>
+
+            <button id="reset">
+                Reset
+            </button>
+
+        </div>
+
+        <div id="result" class="result hidden"></div>
+
+    </section>
+
+
+    <!-- Event Loop -->
+
+    <section class="section">
+
+        <div class="section-header">
+            <div>
+                <h2>Event Loop Demo</h2>
+                <p>
+                    Call Stack → Microtask Queue → Task Queue
+                </p>
+            </div>
+        </div>
+
+        <div class="event-loop-info">
+
+            <div class="expected">
+                <h3>Expected Output</h3>
+
+                <ol>
+                    <li>Sync start</li>
+                    <li>Async start</li>
+                    <li>Sync end</li>
+                    <li>Promise 1</li>
+                    <li>Async after await</li>
+                    <li>Promise 2</li>
+                    <li>Timer 1</li>
+                    <li>Timer 2</li>
+                </ol>
+            </div>
+
+            <div class="console-container">
+
+                <div class="console-header">
+                    <h3>Actual Output</h3>
+
+                    <button id="runEventLoop">
+                        Run Event Loop Demo
+                    </button>
+                </div>
+
+                <div id="console" class="console">
+                    <span class="console-placeholder">
+                        Click the button to run the demo...
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script src="script.js"></script>
+
+</body>
+</html>
