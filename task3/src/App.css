@@ -1,0 +1,326 @@
+#root {
+  min-height: 100vh;
+}
+
+.dashboard {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 32px;
+}
+
+/* Header */
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  margin-bottom: 48px;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #8b5cf6;
+}
+
+h1 {
+  margin: 0;
+  font-size: 44px;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+
+.subtitle {
+  margin: 14px 0 0;
+  color: #8f96a3;
+  font-size: 16px;
+}
+
+/* Player */
+
+.player-card {
+  min-width: 150px;
+  padding: 18px 22px;
+  background: #181b24;
+  border: 1px solid #292e3a;
+  border-radius: 14px;
+}
+
+.player-card span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #8f96a3;
+}
+
+.player-card strong {
+  font-size: 18px;
+}
+
+/* Content */
+
+main {
+  width: 100%;
+}
+
+main h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+  .dashboard {
+    padding: 30px 20px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+  }
+
+  h1 {
+    font-size: 34px;
+  }
+
+  .player-card {
+    width: 100%;
+  }
+}
+
+.quest-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.quest-card {
+  background: #181b24;
+  border: 1px solid #292e3a;
+  border-radius: 16px;
+  padding: 22px;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.quest-card:hover {
+  transform: translateY(-3px);
+  border-color: #8b5cf6;
+}
+
+.quest-category {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: #241d3a;
+  color: #a78bfa;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.quest-card h3 {
+  margin: 0 0 14px;
+  font-size: 20px;
+}
+
+.quest-info p {
+  margin: 7px 0;
+  color: #8f96a3;
+  font-size: 14px;
+}
+
+.quest-info strong {
+  color: #f5f7fa;
+}
+
+.quest-progress {
+  margin-top: 24px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #8f96a3;
+}
+
+.progress-header strong {
+  color: #f5f7fa;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #292e3a;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: #8b5cf6;
+  transition: width 0.2s;
+}
+
+.quest-progress button {
+  margin-top: 14px;
+  margin-right: 8px;
+  padding: 8px 12px;
+  border: 1px solid #353b49;
+  border-radius: 8px;
+  background: #20242e;
+  color: #f5f7fa;
+  cursor: pointer;
+}
+
+.quest-progress button:hover {
+  background: #292e3a;
+}
+
+@media (max-width: 900px) {
+  .quest-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .quest-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.section-header h2 {
+  margin-bottom: 6px;
+}
+
+.section-header p {
+  margin: 0;
+  color: #8f96a3;
+  font-size: 14px;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+}
+
+.controls select,
+.controls button {
+  padding: 10px 14px;
+  border: 1px solid #353b49;
+  border-radius: 8px;
+  background: #181b24;
+  color: #f5f7fa;
+  cursor: pointer;
+}
+
+.controls button:hover,
+.controls select:hover {
+  border-color: #8b5cf6;
+}
+
+@media (max-width: 700px) {
+  .section-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+}
+
+.quest-card.hidden {
+  display: none;
+}
+
+.add-quest {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 40px;
+  padding: 20px;
+  background: #181b24;
+  border: 1px solid #292e3a;
+  border-radius: 16px;
+}
+
+.form-title {
+  grid-column: 1 / -1;
+}
+
+.form-title span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #8b5cf6;
+}
+
+.form-title h2 {
+  margin: 6px 0 0;
+  font-size: 20px;
+}
+
+.add-quest input,
+.add-quest select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #353b49;
+  border-radius: 8px;
+  outline: none;
+  background: #10131a;
+  color: #f5f7fa;
+}
+
+.add-quest input:focus,
+.add-quest select:focus {
+  border-color: #8b5cf6;
+}
+
+.add-quest button {
+  padding: 11px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #8b5cf6;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add-quest button:hover {
+  background: #7c3aed;
+}
+
+.quest-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.quest-actions button {
+  margin: 0;
+}
+
+@media (max-width: 800px) {
+  .add-quest {
+    grid-template-columns: 1fr;
+  }
+}
