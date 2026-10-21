@@ -1,12 +1,9 @@
-name: Deploy FitTrack to GitHub Pages
+name: Deploy React Projects to GitHub Pages
 
 on:
   push:
     branches:
       - main
-    paths:
-      - "midterm/**"
-      - ".github/workflows/deploy.yml"
 
   workflow_dispatch:
 
@@ -16,7 +13,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 
 jobs:
@@ -31,21 +28,40 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: midterm/package-lock.json
 
-      - name: Install dependencies
-        run: npm ci
-        working-directory: midterm
+      - name: Install and build task2
+        working-directory: task2
+        run: |
+          npm ci
+          npm run build
 
-      - name: Build application
-        run: npm run build
+      - name: Install and build task3
+        working-directory: task3
+        run: |
+          npm ci
+          npm run build
+
+      - name: Install and build FitTrack
         working-directory: midterm
+        run: |
+          npm ci
+          npm run build
+
+      - name: Prepare deployment files
+        run: |
+          mkdir -p site/task3
+          mkdir -p site/midterm
+
+          cp -R task2/dist/. site/
+          cp -R task3/dist/. site/task3/
+          cp -R midterm/dist/. site/midterm/
+
+          touch site/.nojekyll
 
       - name: Upload production artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: midterm/dist
+          path: site
 
   deploy:
     environment:
