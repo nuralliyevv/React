@@ -47,6 +47,12 @@ jobs:
           npm ci
           npm run build
 
+      - name: Install and build task5
+        working-directory: task5
+        run: |
+          npm ci
+          npm run build
+
       - name: Install and build FitTrack
         working-directory: midterm
         run: |
@@ -57,11 +63,13 @@ jobs:
         run: |
           mkdir -p site/task3
           mkdir -p site/task4
+          mkdir -p site/task5
           mkdir -p site/midterm
 
           cp -R task2/dist/. site/
           cp -R task3/dist/. site/task3/
           cp -R task4/dist/. site/task4/
+          cp -R task5/dist/. site/task5/
           cp -R midterm/dist/. site/midterm/
 
           touch site/.nojekyll
