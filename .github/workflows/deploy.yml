@@ -72,6 +72,7 @@ jobs:
           cp -R task5/dist/. site/task5/
           cp -R midterm/dist/. site/midterm/
 
+          node task5/scripts/create-root-fallback.mjs site/404.html
           touch site/.nojekyll
 
       - name: Upload production artifact
