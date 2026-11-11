@@ -1,4 +1,40 @@
 import { Link } from "react-router-dom";
 export default function ItemCard({ item, onEdit, onRemove }) {
-  return <article className="item-card"><div className="card-art"><span>{item.category?.slice(0, 1) || "I"}</span><span className="card-category">{item.category}</span></div><div className="card-content"><div className="card-title-row"><h3>{item.name}</h3><span className={`status ${item.status === "Available" ? "available" : "unavailable"}`}>{item.status}</span></div><p>{item.description}</p><div className="card-meta"><span>★ {Number(item.rating || 0).toFixed(1)}</span><span>{Number(item.price || 0).toLocaleString()} ₸</span></div><Link className="text-link" to={`/items/${item.id}`}>View details <span>→</span></Link>{onEdit&&<div className="card-actions"><button onClick={()=>onEdit(item)}>Edit</button><button onClick={()=>onRemove(item)}>Remove</button></div>}</div></article>;
+  return (
+    <article className="item-card">
+      <div className="card-art">
+        <span>{item.category?.slice(0, 1) || "I"}</span>
+        <span className="card-category">{item.category}</span>
+      </div>
+
+      <div className="card-content">
+        <div className="card-title-row">
+          <h3>{item.name}</h3>
+          <span
+            className={`status ${item.status === "Available" ? "available" : "unavailable"}`}
+          >
+            {item.status}
+          </span>
+        </div>
+
+        <p>{item.description}</p>
+
+        <div className="card-meta">
+          <span>★ {Number(item.rating || 0).toFixed(1)}</span>
+          <span>{Number(item.price || 0).toLocaleString()} ₸</span>
+        </div>
+
+        <Link className="text-link" to={`/items/${item.id}`}>
+          View details <span>→</span>
+        </Link>
+
+        {onEdit && (
+          <div className="card-actions">
+            <button onClick={() => onEdit(item)}>Edit</button>
+            <button onClick={() => onRemove(item)}>Remove</button>
+          </div>
+        )}
+      </div>
+    </article>
+  );
 }
