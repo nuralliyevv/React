@@ -77,10 +77,12 @@ async function navigateRequest(request, url) {
       if (offlinePage) return offlinePage;
     }
     const shell = await caches.open(SHELL_CACHE);
+    const appShell = (await shell.match(APP_URL))
+      || (await shell.match(new URL("index.html", SCOPE_URL).href));
     if (isKnownAppRoute(url.pathname)) {
-      return (await shell.match(APP_URL)) || (await caches.match(OFFLINE_URL));
+      return appShell || (await caches.match(OFFLINE_URL));
     }
-    return (await caches.match(OFFLINE_URL)) || (await shell.match(APP_URL));
+    return (await caches.match(OFFLINE_URL)) || appShell;
   }
 }
 
