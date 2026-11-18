@@ -17,6 +17,16 @@ Firebase initialization is in `src/firebase.js`. Auth state is observed through 
 
 The current homework API is simulated in `src/api/fakeApi.js` and persists its sample inventory in browser local storage. Replace that adapter with a real API while keeping the service and cache interface when connecting a backend.
 
+## Progressive Web App
+
+The manifest is `public/manifest.json`; the 192×192 and 512×512 PNG icons are in `public/icons/`. The production build generates `dist/sw.js` from `public/sw.js` after Vite has hashed the JavaScript and CSS bundles, then precaches the complete app shell and the standalone offline page. The service worker uses cache-first for bundled static assets and fonts, and network-first for explicitly public, credential-free same-origin `/api/items`, `/api/products`, and their detail routes. API entries expire after seven days and the cache is capped at 50 entries; static runtime entries are capped at 100. Old versioned shell caches are deleted on activation. Firebase/auth endpoints are excluded.
+
+The current fake API does not make HTTP requests; it reads the local inventory store, so the catalogue remains available offline from that store. The online/offline indicator reports when the app is offline, and the service worker provides the cached app shell or standalone offline page when navigation cannot reach the network. A waiting worker is activated only after the user selects **Update now**.
+
+The main navigation collapses into a touch-friendly menu on narrow screens. Local development does not register the production service worker; check installation and offline behavior with a production build (`npm run build`) served over localhost or HTTPS.
+
+For GitHub Pages deployment, add the six `VITE_FIREBASE_*` values as repository Actions variables. The repository workflow passes those variables into the task5 build step; changing them requires a new deployment run.
+
 ## Run locally
 
 ```sh

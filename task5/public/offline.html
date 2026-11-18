@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#48664b" />
+    <title>Offline · ItemFlow</title>
+    <style>
+      :root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#202720;background:#f8f8f4;font-synthesis:none;text-rendering:optimizeLegibility}
+      *{box-sizing:border-box}body{margin:0;min-width:320px;min-height:100vh;display:grid;place-items:center;padding:24px}
+      main{width:min(100%,520px);padding:clamp(28px,8vw,56px);background:#fff;border:1px solid #e2e4dc;text-align:center}
+      .mark{width:54px;height:54px;margin:0 auto 24px;display:grid;place-items:center;border-radius:50%;background:#48664b;color:#fff;font:30px Georgia,serif}
+      .eyebrow{color:#71836d;font-size:11px;font-weight:700;letter-spacing:1.6px}h1{font:400 clamp(34px,8vw,50px)/1.1 Georgia,serif;margin:14px 0}p{color:#73796f;font-size:15px;line-height:1.7}
+      button,a{min-height:48px;padding:13px 18px;border:0;display:inline-flex;align-items:center;justify-content:center;background:#48664b;color:#fff;font-family:inherit;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer}
+      .actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:26px}.secondary{background:transparent;color:#48664b;border:1px solid #d9ddd4}
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="mark" aria-hidden="true">I</div>
+      <span class="eyebrow">ITEMFLOW / OFFLINE</span>
+      <h1>You’re offline.</h1>
+      <p>This page isn’t available yet. Reconnect to the internet and try again. Your previously saved inventory may still be available from the app.</p>
+      <div class="actions">
+        <button type="button" onclick="location.reload()">Retry connection</button>
+        <a class="secondary" href="/React/task5/items">View saved inventory</a>
+      </div>
+    </main>
+  </body>
+</html>

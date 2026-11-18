@@ -1,0 +1,24 @@
+{
+  "name": "ItemFlow Inventory Workspace",
+  "short_name": "ItemFlow",
+  "description": "Manage your inventory, availability, and stock value.",
+  "start_url": "/React/task5/",
+  "scope": "/React/task5/",
+  "display": "standalone",
+  "theme_color": "#48664b",
+  "background_color": "#f8f8f4",
+  "icons": [
+    {
+      "src": "/React/task5/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/React/task5/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

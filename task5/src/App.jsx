@@ -13,6 +13,7 @@ const Login = lazy(() => import("./pages/Login.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 const Signup = lazy(() => import("./pages/Signup.jsx"));
 const Profile = lazy(() => import("./pages/Profile.jsx"));
+const Offline = lazy(() => import("./pages/Offline.jsx"));
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <Dashboard /> },
       { path: "login", element: <Login /> },
       { path: "signup", element: <Signup /> },
+      { path: "offline", element: <Offline /> },
       { element: <RequireAuth />, children: [{ path: "profile", element: <Profile /> }] },
       { path: "*", element: <NotFound /> },
     ],
