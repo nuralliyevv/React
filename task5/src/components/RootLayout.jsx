@@ -29,7 +29,7 @@ export default function RootLayout() {
     const unsubscribe = subscribeToPwaUpdate(() => dispatch(setUpdateAvailable(true)));
     navigator.serviceWorker?.getRegistration(import.meta.env.BASE_URL)
       .then((registration) => {
-        if (registration?.waiting) setUpdateAvailable(true);
+        if (registration?.waiting) dispatch(setUpdateAvailable(true));
       })
       .catch(() => {});
     return () => { unsubscribe(); window.removeEventListener("online", onOnline); window.removeEventListener("offline", onOffline); };

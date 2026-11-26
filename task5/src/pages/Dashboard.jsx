@@ -62,7 +62,7 @@ export default function Dashboard() {
             <p>Items in view</p>
             <strong>{scoped.length}</strong>
           </div>
-        <small>of {totalItems} total</small>
+          <small>of {totalItems} total</small>
         </article>
         <article className="stat-card">
           <span className="stat-icon stat-icon-green">✓</span>
