@@ -1,17 +1,5 @@
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function useOnlineStatus() {
-  const [isOnline, setIsOnline] = useState(() => navigator.onLine);
-
-  useEffect(() => {
-    const update = () => setIsOnline(navigator.onLine);
-    window.addEventListener("online", update);
-    window.addEventListener("offline", update);
-    return () => {
-      window.removeEventListener("online", update);
-      window.removeEventListener("offline", update);
-    };
-  }, []);
-
-  return isOnline;
+  return useSelector((state) => state.pwa.online);
 }

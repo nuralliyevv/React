@@ -1,37 +1,25 @@
-import { useEffect, useState } from "react";
-import { loadItems } from "../services/itemService.js";
+import { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchItems } from "../store/inventorySlice.js";
+import { selectInventoryError, selectInventoryStatus, selectItems } from "../store/selectors.js";
+
 export default function useItems() {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [reload, setReload] = useState(0);
+  const dispatch = useDispatch();
+  const items = useSelector(selectItems);
+  const status = useSelector(selectInventoryStatus);
+  const error = useSelector(selectInventoryError);
+  const loadedAt = useSelector((state) => state.inventory.loadedAt);
 
   useEffect(() => {
-    let active = true;
+    if (status === "idle" || (status === "fulfilled" && loadedAt && Date.now() - loadedAt >= 30_000)) dispatch(fetchItems());
+  }, [dispatch, status, loadedAt]);
 
-    setLoading(true);
-    setError("");
-
-    loadItems({ force: reload > 0 })
-      .then((data) => {
-        if (active) setItems(data);
-      })
-      .catch((err) => {
-        if (active) setError(err.message || "Unable to load inventory.");
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [reload]);
+  const retry = useCallback(() => dispatch(fetchItems({ force: true })), [dispatch]);
 
   return {
     items,
-    loading,
-    error,
-    retry: () => setReload((count) => count + 1),
+    loading: status === "idle" || status === "pending",
+    error: status === "rejected" ? error : "",
+    retry,
   };
 }

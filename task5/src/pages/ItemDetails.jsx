@@ -1,46 +1,31 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/Loading.jsx";
-import { changeItemStatus, loadItemDetails } from "../services/itemService.js";
+import { fetchItemDetails } from "../store/itemDetailsSlice.js";
+import { updateInventoryStatus } from "../store/inventorySlice.js";
 
 export default function ItemDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [item, setItem] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  const detail = useSelector((state) => state.itemDetails);
+  const item = detail.currentId === String(id) ? detail.item : null;
+  const loading = detail.currentId !== String(id) || detail.status === "pending";
+  const error = detail.currentId === String(id) ? detail.error || "" : "";
   const [updating, setUpdating] = useState(false);
+  const [mutationError, setMutationError] = useState("");
 
   useEffect(() => {
-    let active = true;
-
-    setItem(null);
-    setLoading(true);
-    setError("");
-
     if (!/^\d+$/.test(id)) {
-      setError("This item ID is not valid.");
-      setLoading(false);
-      return () => {
-        active = false;
-      };
+      return;
     }
+    dispatch(fetchItemDetails(id));
+  }, [dispatch, id]);
 
-    loadItemDetails(id)
-      .then((data) => {
-        if (active) setItem(data);
-      })
-      .catch((err) => {
-        if (active) setError(err.message || "Unable to load this item.");
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [id]);
+  if (!/^\d+$/.test(id)) {
+    return <section className="page-wrap"><div className="state-card"><h1>Item unavailable</h1><p>This item ID is not valid.</p><Link className="button button-primary" to="/items">← All items</Link></div></section>;
+  }
 
   if (loading) {
     return (
@@ -77,13 +62,15 @@ export default function ItemDetails() {
 
   async function toggleStatus() {
     setUpdating(true);
+    setMutationError("");
 
     try {
       const status = item.status === "Available" ? "Unavailable" : "Available";
-      const updated = await changeItemStatus(item.id, status);
-      setItem((currentItem) => ({ ...currentItem, ...updated }));
+      const updated = await dispatch(updateInventoryStatus({ id: item.id, status })).unwrap();
+      dispatch(fetchItemDetails(item.id));
+      return updated;
     } catch (err) {
-      setError(err.message || "Unable to update availability.");
+      setMutationError(err.message || "Unable to update availability.");
     } finally {
       setUpdating(false);
     }
@@ -123,6 +110,8 @@ export default function ItemDetails() {
               </div>
             ))}
           </div>
+
+          {mutationError && <p className="inline-message" role="alert">{mutationError}</p>}
 
           <button
             className="button button-quiet detail-toggle"

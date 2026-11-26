@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext.jsx";
-import useOnlineStatus from "../hooks/useOnlineStatus.js";
 import { activateWaitingPwaUpdate, subscribeToPwaUpdate } from "../services/pwaService.js";
+import { setOnline, setUpdateAvailable } from "../store/pwaSlice.js";
 
 const links = [
   ["Home", "/"],
@@ -13,20 +14,26 @@ const links = [
 
 export default function RootLayout() {
   const { user, loading, logout } = useAuth();
-  const isOnline = useOnlineStatus();
+  const isOnline = useSelector((state) => state.pwa.online);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [updateAvailable, setUpdateAvailable] = useState(false);
+  const updateAvailable = useSelector((state) => state.pwa.updateAvailable);
 
   useEffect(() => {
-    const unsubscribe = subscribeToPwaUpdate(() => setUpdateAvailable(true));
+    const onOnline = () => dispatch(setOnline(true));
+    const onOffline = () => dispatch(setOnline(false));
+    window.addEventListener("online", onOnline);
+    window.addEventListener("offline", onOffline);
+    dispatch(setOnline(navigator.onLine));
+    const unsubscribe = subscribeToPwaUpdate(() => dispatch(setUpdateAvailable(true)));
     navigator.serviceWorker?.getRegistration(import.meta.env.BASE_URL)
       .then((registration) => {
         if (registration?.waiting) setUpdateAvailable(true);
       })
       .catch(() => {});
-    return unsubscribe;
-  }, []);
+    return () => { unsubscribe(); window.removeEventListener("online", onOnline); window.removeEventListener("offline", onOffline); };
+  }, [dispatch]);
 
   async function handleLogout() {
     try { await logout(); navigate("/login", { replace: true }); } catch { /* AuthContext records the error. */ }

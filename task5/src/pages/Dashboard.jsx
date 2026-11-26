@@ -1,40 +1,16 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Loading from "../components/Loading.jsx";
 import useItems from "../hooks/useItems.js";
+import { selectDashboardStats, selectItems } from "../store/selectors.js";
 
 export default function Dashboard() {
-  const { items, loading, error, retry } = useItems();
+  const { loading, error, retry } = useItems();
   const [status, setStatus] = useState("all");
-
-  const scoped = useMemo(
-    () => items.filter((item) => status === "all" || item.status === status),
-    [items, status],
-  );
-  const averageRating = scoped.length
-    ? scoped.reduce((sum, item) => sum + Number(item.rating || 0), 0) /
-      scoped.length
-    : 0;
-  const stockValue = scoped.reduce(
-    (sum, item) => sum + Number(item.price || 0) * Number(item.stock || 0),
-    0,
-  );
-  const availableCount = scoped.filter(
-    (item) => item.status === "Available",
-  ).length;
-  const lowStockCount = scoped.filter((item) => Number(item.stock) < 10).length;
-
-  const categories = Object.entries(
-    scoped.reduce((counts, item) => {
-      const category = item.category || "Other";
-      counts[category] = (counts[category] || 0) + 1;
-      return counts;
-    }, {}),
-  ).sort((a, b) => b[1] - a[1]);
-  const statuses = ["Available", "Unavailable"].map((name) => [
-    name,
-    scoped.filter((item) => item.status === name).length,
-  ]);
+  const stats = useSelector((state) => selectDashboardStats(state, status));
+  const { scoped, averageRating, stockValue, availableCount, lowStockCount, categories, statuses } = stats;
+  const totalItems = useSelector(selectItems).length;
   const maxCategoryCount = Math.max(1, ...categories.map(([, count]) => count));
 
   if (loading) {
@@ -86,7 +62,7 @@ export default function Dashboard() {
             <p>Items in view</p>
             <strong>{scoped.length}</strong>
           </div>
-          <small>of {items.length} total</small>
+        <small>of {totalItems} total</small>
         </article>
         <article className="stat-card">
           <span className="stat-icon stat-icon-green">✓</span>

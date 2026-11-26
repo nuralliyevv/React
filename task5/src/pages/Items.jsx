@@ -1,21 +1,26 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useSearchParams } from "react-router-dom";
 import ItemCard from "../components/ItemCard.jsx";
 import ItemForm from "../components/ItemForm.jsx";
 import Loading from "../components/Loading.jsx";
 import useItems from "../hooks/useItems.js";
-import { addItem, editItem, removeItem } from "../services/itemService.js";
+import { createInventoryItem, deleteInventoryItem, updateInventoryItem } from "../store/inventorySlice.js";
+import { selectFilteredItems } from "../store/selectors.js";
 
 const PAGE_SIZE = 6;
 
 export default function Items() {
   const { items, loading, error, retry } = useItems();
+  const dispatch = useDispatch();
   const [params, setParams] = useSearchParams();
   const [formItem, setFormItem] = useState(undefined);
   const [saving, setSaving] = useState(false);
   const [actionMessage, setActionMessage] = useState("");
 
   const search = params.get("search") || "";
+  const [searchDraftState, setSearchDraftState] = useState({ search, value: search });
+  const searchDraft = searchDraftState.search === search ? searchDraftState.value : search;
   const category = params.get("category") || "all";
   const status = params.get("status") || "all";
   const sort = params.get("sort") || "name";
@@ -23,28 +28,20 @@ export default function Items() {
 
   const categories = [...new Set(items.map((item) => item.category).filter(Boolean))].sort();
 
-  const filtered = useMemo(() => {
-    const query = search.trim().toLowerCase();
+  const filters = useMemo(() => ({ search, category, status, sort }), [search, category, status, sort]);
+  const filtered = useSelector((state) => selectFilteredItems(state, filters));
 
-    return items
-      .filter((item) => {
-        const matchesSearch =
-          !query ||
-          `${item.name} ${item.description} ${item.manufacturer}`
-            .toLowerCase()
-            .includes(query);
-        const matchesCategory = category === "all" || item.category === category;
-        const matchesStatus = status === "all" || item.status === status;
-
-        return matchesSearch && matchesCategory && matchesStatus;
-      })
-      .sort((a, b) => {
-        if (sort === "price-low") return Number(a.price) - Number(b.price);
-        if (sort === "rating") return Number(b.rating) - Number(a.rating);
-        if (sort === "name-desc") return b.name.localeCompare(a.name);
-        return a.name.localeCompare(b.name);
-      });
-  }, [items, search, category, status, sort]);
+  useEffect(() => {
+    if (searchDraft === search) return undefined;
+    const timer = window.setTimeout(() => {
+      const nextParams = new URLSearchParams(params);
+      if (searchDraft.trim()) nextParams.set("search", searchDraft);
+      else nextParams.delete("search");
+      nextParams.delete("page");
+      setParams(nextParams);
+    }, 250);
+    return () => window.clearTimeout(timer);
+  }, [searchDraft, search, params, setParams]);
 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, pageCount);
@@ -72,9 +69,9 @@ export default function Items() {
 
     try {
       if (formItem === null) {
-        await addItem(data);
+        await dispatch(createInventoryItem(data)).unwrap();
       } else if (formItem) {
-        await editItem(formItem.id, data);
+        await dispatch(updateInventoryItem({ id: formItem.id, changes: data })).unwrap();
       }
 
       setFormItem(undefined);
@@ -83,7 +80,6 @@ export default function Items() {
           ? "Item created successfully."
           : "Item updated successfully.",
       );
-      retry();
     } catch (err) {
       setActionMessage(err.message || "Unable to save item.");
     } finally {
@@ -95,9 +91,8 @@ export default function Items() {
     if (!window.confirm(`Remove “${item.name}” from inventory?`)) return;
 
     try {
-      await removeItem(item.id);
+      await dispatch(deleteInventoryItem(item.id)).unwrap();
       setActionMessage("Item removed successfully.");
-      retry();
     } catch (err) {
       setActionMessage(err.message || "Unable to remove item.");
     }
@@ -147,8 +142,8 @@ export default function Items() {
         <label className="search-box">
           <span>⌕</span>
           <input
-            value={search}
-            onChange={(event) => update("search", event.target.value)}
+            value={searchDraft}
+            onChange={(event) => setSearchDraftState({ search, value: event.target.value })}
             placeholder="Search products…"
             aria-label="Search items"
           />

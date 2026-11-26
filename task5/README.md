@@ -17,6 +17,17 @@ Firebase initialization is in `src/firebase.js`. Auth state is observed through 
 
 The current homework API is simulated in `src/api/fakeApi.js` and persists its sample inventory in browser local storage. Replace that adapter with a real API while keeping the service and cache interface when connecting a backend.
 
+## Redux Toolkit state management
+
+The app uses Redux Toolkit for shared catalogue and PWA state. `src/store/store.js` configures the store and `src/main.jsx` exposes it through React Redux's `Provider`.
+
+- `inventorySlice.js` owns the shared inventory list and its request/mutation states. Its `createAsyncThunk` operations fetch the list and create, edit, delete, or change item availability. Each operation uses `pending`/`fulfilled`/`rejected` reducers. Successful writes invalidate the service cache and refetch the list.
+- `itemDetailsSlice.js` owns the current details request. A request ID check ignores stale responses when navigation changes to another item before an earlier request completes.
+- `pwaSlice.js` owns online/offline status and whether a service-worker update is waiting. `RootLayout` dispatches browser connectivity and PWA update events into this slice.
+- `selectors.js` exports reusable state selectors and two memoized `createSelector` selectors: `selectFilteredItems` for search/category/status/sort and `selectDashboardStats` for dashboard calculations.
+
+`useItems` is the UI-facing hook for the inventory thunk and status selectors. URL query parameters remain the source of truth for inventory search, filters, sorting, and pagination; search is written to the URL after a 250 ms debounce. Form visibility, form values, and transient success/error messages remain local UI state. Authentication remains in `AuthContext`, because it is managed by Firebase's auth-state listener.
+
 ## Progressive Web App
 
 The manifest is `public/manifest.json`; the 192×192 and 512×512 PNG icons are in `public/icons/`. The production build generates `dist/sw.js` from `public/sw.js` after Vite has hashed the JavaScript and CSS bundles, then precaches the complete app shell and the standalone offline page. The service worker uses cache-first for bundled static assets and fonts, and network-first for explicitly public, credential-free same-origin `/api/items`, `/api/products`, and their detail routes. API entries expire after seven days and the cache is capped at 50 entries; static runtime entries are capped at 100. Old versioned shell caches are deleted on activation. Firebase/auth endpoints are excluded.
